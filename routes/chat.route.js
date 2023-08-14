@@ -11,6 +11,21 @@ chatRouter.get("/", async (req, res) => {
 
 //  to post the chat
 
+// chatRouter.post("/send", async (req, res) => {
+//   const users = ["Alan", "Bob", "Carol", "Dean", "Elin"];
+//   const randomUser = users[Math.floor(Math.random() * users.length)];
+ 
+//   const payload = req.body;
+  
+//   try {
+//     const post = new ChatModel({ user: randomUser, message: payload.message,like:0,time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })});
+//     await post.save();
+//     res.send("Successful");
+//   } catch (error) {
+//     res.status(500).send({ msg: "Something went wrong", error: error });
+//   }
+// });
+
 chatRouter.post("/send", async (req, res) => {
   const users = ["Alan", "Bob", "Carol", "Dean", "Elin"];
   const randomUser = users[Math.floor(Math.random() * users.length)];
@@ -18,13 +33,23 @@ chatRouter.post("/send", async (req, res) => {
   const payload = req.body;
   
   try {
-    const post = new ChatModel({ user: randomUser, message: payload.message,like:0,time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })});
+    const currentTime = new Date();
+    const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const post = new ChatModel({
+      user: randomUser,
+      message: payload.message,
+      like: 0,
+      time: formattedTime
+    });
+    
     await post.save();
     res.send("Successful");
   } catch (error) {
     res.status(500).send({ msg: "Something went wrong", error: error });
   }
 });
+
 
 // to edit the particular chat
 
